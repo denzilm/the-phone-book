@@ -1,0 +1,44 @@
+.brand {
+	font-family: 'Kaushan Script', 'cursive';
+	color: #3498db !important;
+}
+
+.text-md {
+	font-size: 2rem;
+}
+
+.text-normal {
+	font-size: 1.6rem;
+}
+
+.text-lg {
+	font-size: 3rem;
+}
+
+@keyframes moveInFromBottom {
+	0% {
+		opacity: 0;
+		transform: translateY(10px);
+	}
+
+	100% {
+		opacity: 1;
+		transform: translate(0);
+	}
+}
+
+.phone-book .remove {
+	display: none;
+}
+
+.phone-book:hover .remove {
+	display: inline;
+}
+
+.phone-book-entry .remove {
+	visibility: hidden;
+}
+
+.phone-book-entry:hover .remove {
+	visibility: visible;
+}

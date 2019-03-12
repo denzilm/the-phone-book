@@ -1,0 +1,24 @@
+.header {
+	background-image: linear-gradient(
+			to right,
+			rgba(0, 0, 0.5),
+			rgba(0, 0, 0, 0.5)
+		),
+		url('../img/phone_number_hero.jpeg');
+	background-size: cover;
+	background-position: center;
+	width: 100%;
+	height: 82.9vh;
+	backface-visibility: hidden;
+}
+
+.header__headline {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	color: #f7f7f7;
+	align-items: center;
+	font-size: 3rem;
+	height: calc(100% - 70px);
+	animation: moveInFromBottom 1.3s ease;
+}
