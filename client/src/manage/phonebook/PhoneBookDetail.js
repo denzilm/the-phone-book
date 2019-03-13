@@ -47,7 +47,6 @@ class PhoneBookDetail extends Component {
 	}
 
 	render() {
-		console.log(this.props);
 		if (!this.props.phoneBook || !this.props.phoneBook.phoneBookEntries) {
 			return <Spinner />;
 		}

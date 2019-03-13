@@ -8,6 +8,7 @@ import PhoneBooks from './phonebooks';
 import PhoneBookDetail from './phonebook/PhoneBookDetail';
 import PhoneBookEntry from './phonebook/entries/PhoneBookEntry';
 import PhoneBookCreate from './phonebook/PhoneBookCreate';
+import Modal from '../common/components/utils/Modal';
 
 const Management = props => {
 	return (

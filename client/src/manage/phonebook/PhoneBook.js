@@ -8,7 +8,7 @@ import TextArea from '../../common/components/form/TextArea';
 class PhoneBook extends Component {
 	onSubmit = values => {
 		if (!this.props.match.params.id) {
-			this.props.createPhoneBook(values)
+			this.props.createPhoneBook(values);
 		} else {
 			this.props.updatePhoneBook(values);
 		}
@@ -31,7 +31,11 @@ class PhoneBook extends Component {
 								name='title'
 								placeholder='Title'
 								component={Input}
-								validate={Validators.required('Title')}
+								validate={Validators.composeValidators(
+									Validators.required('Title'),
+									Validators.minLength(4),
+									Validators.maxLength(50)
+								)}
 							/>
 							<Field
 								name='description'
@@ -39,6 +43,7 @@ class PhoneBook extends Component {
 								component={TextArea}
 								validate={Validators.composeValidators(
 									Validators.required('Description'),
+									Validators.minLength(10),
 									Validators.maxLength(100)
 								)}
 								rows={3}
