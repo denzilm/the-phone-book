@@ -65,14 +65,13 @@ namespace ThePhoneBook.WebApi.Api.PhoneBookEntries
             [FromQuery]PagingRequest pagingRequest)
         {
             // Check if phone book exists
-            if (!await _phoneBookRepository.ExistsAsync(phoneBookId).ConfigureAwait(false))
+            if (!await _phoneBookRepository.ExistsAsync(phoneBookId))
             {
                 return NotFound();
             }
 
             IReadOnlyList<PhoneBookEntry> phoneBookEntries = await _phoneBookEntryRepository
-                  .GetPhoneBookEntriesForBook(phoneBookId, pagingRequest.Page, pagingRequest.PageSize)
-                  .ConfigureAwait(false);
+                  .GetPhoneBookEntriesForBook(phoneBookId, pagingRequest.Page, pagingRequest.PageSize);
 
             // Check whether the current phone book have any entries
             if (phoneBookEntries.Count < 1)
@@ -86,8 +85,7 @@ namespace ThePhoneBook.WebApi.Api.PhoneBookEntries
             {
                 // Get the number of entries for this book
                 // Need it for paging
-                int phoneBookEntriesCount = await _phoneBookEntryRepository.CountForBookAsync(phoneBookId)
-                    .ConfigureAwait(false);
+                int phoneBookEntriesCount = await _phoneBookEntryRepository.CountForBookAsync(phoneBookId);
 
                 PagingInfo pagingInfo = new PagingInfo(phoneBookEntriesCount, pagingRequest.Page, pagingRequest.PageSize);
                 Response.Headers.Add("X-Pagination",
@@ -128,14 +126,13 @@ namespace ThePhoneBook.WebApi.Api.PhoneBookEntries
         public async Task<ActionResult<IEnumerable<PhoneBookEntryResponse>>> GetPhoneBookEntry(Guid phoneBookId, Guid id)
         {
             // Check if phone book exists
-            if (!await _phoneBookRepository.ExistsAsync(phoneBookId).ConfigureAwait(false))
+            if (!await _phoneBookRepository.ExistsAsync(phoneBookId))
             {
                 return NotFound();
             }
 
             // Check if phone book entry exists
-            PhoneBookEntry phoneBookEntry = await _phoneBookEntryRepository.GetPhoneBookEntryWithPhoneBook(id)
-                .ConfigureAwait(false);
+            PhoneBookEntry phoneBookEntry = await _phoneBookEntryRepository.GetPhoneBookEntryWithPhoneBook(id);
 
             if (phoneBookEntry == null)
             {
@@ -185,8 +182,7 @@ namespace ThePhoneBook.WebApi.Api.PhoneBookEntries
             }
 
             // Check if phone book entry exists
-            PhoneBookEntry phoneBookEntry = await _phoneBookEntryRepository.GetPhoneBookEntryWithPhoneBook(id)
-                .ConfigureAwait(false);
+            PhoneBookEntry phoneBookEntry = await _phoneBookEntryRepository.GetPhoneBookEntryWithPhoneBook(id);
 
             if (phoneBookEntry == null)
             {
@@ -199,7 +195,7 @@ namespace ThePhoneBook.WebApi.Api.PhoneBookEntries
             if (phoneBookEntry.PhoneBook.UserId == userId)
             {
                 _phoneBookEntryRepository.Delete(phoneBookEntry);
-                await _phoneBookEntryRepository.SaveChangesAsync().ConfigureAwait(false);
+                await _phoneBookEntryRepository.SaveChangesAsync();
 
                 return NoContent();
             }
@@ -244,8 +240,7 @@ namespace ThePhoneBook.WebApi.Api.PhoneBookEntries
             }
 
             // Check if phone book entry exists
-            PhoneBookEntry phoneBookEntry = await _phoneBookEntryRepository.GetPhoneBookEntryWithPhoneBook(id)
-                .ConfigureAwait(false);
+            PhoneBookEntry phoneBookEntry = await _phoneBookEntryRepository.GetPhoneBookEntryWithPhoneBook(id);
 
             if (phoneBookEntry == null)
             {
@@ -288,7 +283,7 @@ namespace ThePhoneBook.WebApi.Api.PhoneBookEntries
             [FromBody] PhoneBookEntryCreateRequest phoneBookEntryCreateRequest)
         {
             // Check if phone book exists
-            PhoneBook phoneBook = await _phoneBookRepository.GetByIdAsync(phoneBookId).ConfigureAwait(false);
+            PhoneBook phoneBook = await _phoneBookRepository.GetByIdAsync(phoneBookId);
             if (phoneBook == null)
             {
                 return NotFound();
@@ -302,8 +297,7 @@ namespace ThePhoneBook.WebApi.Api.PhoneBookEntries
                 PhoneBookEntry phoneBookEntry = _mapper.Map<PhoneBookEntry>(phoneBookEntryCreateRequest);
 
                 phoneBookEntry = await _phoneBookEntryRepository
-                    .CreatePhoneBookEntryForBook(phoneBookId, phoneBookEntry)
-                    .ConfigureAwait(false);
+                    .CreatePhoneBookEntryForBook(phoneBookId, phoneBookEntry);
 
                 await _phoneBookRepository.SaveChangesAsync();
 

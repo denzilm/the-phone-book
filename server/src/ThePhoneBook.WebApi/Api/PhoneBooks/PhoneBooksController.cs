@@ -61,12 +61,10 @@ namespace ThePhoneBook.WebApi.Api.PhoneBooks
         public async Task<ActionResult<PhoneBookResponse>> GetPhoneBooks([FromQuery]PagingRequest pagingRequest)
         {
             Guid userId = Guid.Parse(_userInfoService.UserId);
-            int phoneBooksCount = await _phoneBookRepository.CountForUserAsync(userId)
-                .ConfigureAwait(false);
+            int phoneBooksCount = await _phoneBookRepository.CountForUserAsync(userId);
 
             IReadOnlyList<PhoneBook> phoneBooks = await _phoneBookRepository
-                .GetPhoneBooksForUser(userId, pagingRequest.Page, pagingRequest.PageSize)
-                .ConfigureAwait(false);
+                .GetPhoneBooksForUser(userId, pagingRequest.Page, pagingRequest.PageSize);
 
             PagingInfo pagingInfo = new PagingInfo(phoneBooksCount, pagingRequest.Page, pagingRequest.PageSize);
             Response.Headers.Add("X-Pagination",
@@ -97,12 +95,10 @@ namespace ThePhoneBook.WebApi.Api.PhoneBooks
             [FromQuery]PagingRequest pagingRequest)
         {
             Guid userId = Guid.Parse(_userInfoService.UserId);
-            int phoneBooksCount = await _phoneBookRepository.CountForUserAsync(userId)
-                .ConfigureAwait(false);
+            int phoneBooksCount = await _phoneBookRepository.CountForUserAsync(userId);
 
             IReadOnlyList<PhoneBook> phoneBooks = await _phoneBookRepository
-                .GetPhoneBooksForUserWithEntries(userId, pagingRequest.Page, pagingRequest.PageSize)
-                .ConfigureAwait(false);
+                .GetPhoneBooksForUserWithEntries(userId, pagingRequest.Page, pagingRequest.PageSize);
 
             PagingInfo pagingInfo = new PagingInfo(phoneBooksCount, pagingRequest.Page, pagingRequest.PageSize);
             Response.Headers.Add("X-Pagination",
@@ -132,8 +128,7 @@ namespace ThePhoneBook.WebApi.Api.PhoneBooks
             Guid userId = Guid.Parse(_userInfoService.UserId);
 
             IReadOnlyList<PhoneBookEntry> phoneBookEntries = await _phoneBookEntryRepository
-                .SearchPhoneBookEntries(userId, query)
-                .ConfigureAwait(false);
+                .SearchPhoneBookEntries(userId, query);
 
             return Ok(_mapper.Map<IEnumerable<PhoneBookEntryWithPhoneBookResponse>>(phoneBookEntries));
         }
@@ -207,8 +202,7 @@ namespace ThePhoneBook.WebApi.Api.PhoneBooks
         {
             // Check if the phone book exists
             PhoneBook phoneBook = await _phoneBookRepository
-                .GetPhoneBookWithEntries(id)
-                .ConfigureAwait(false);
+                .GetPhoneBookWithEntries(id);
 
             phoneBook.PhoneBookEntries = phoneBook.PhoneBookEntries
                 .OrderBy(e => e.LastName)
@@ -255,7 +249,7 @@ namespace ThePhoneBook.WebApi.Api.PhoneBooks
         public async Task<ActionResult> DeletePhoneBook(Guid id)
         {
             // Check if the phone book exists
-            PhoneBook phoneBook = await _phoneBookRepository.GetByIdAsync(id).ConfigureAwait(false);
+            PhoneBook phoneBook = await _phoneBookRepository.GetByIdAsync(id);
 
             if (phoneBook == null)
             {
@@ -268,7 +262,7 @@ namespace ThePhoneBook.WebApi.Api.PhoneBooks
             if (phoneBook.UserId == userId)
             {
                 _phoneBookRepository.Delete(phoneBook);
-                await _phoneBookRepository.SaveChangesAsync().ConfigureAwait(false);
+                await _phoneBookRepository.SaveChangesAsync();
 
                 return NoContent();
             }
@@ -308,7 +302,7 @@ namespace ThePhoneBook.WebApi.Api.PhoneBooks
             [FromBody] PhoneBookUpdateRequest phoneBookUpdateRequest)
         {
             // Check if the phone book exists
-            PhoneBook phoneBook = await _phoneBookRepository.GetByIdAsync(id).ConfigureAwait(false);
+            PhoneBook phoneBook = await _phoneBookRepository.GetByIdAsync(id);
 
             if (phoneBook == null)
             {
@@ -353,8 +347,7 @@ namespace ThePhoneBook.WebApi.Api.PhoneBooks
             PhoneBook phoneBook = _mapper.Map<PhoneBook>(phoneBookCreateRequest);
 
             phoneBook = await _phoneBookRepository
-                .CreatePhoneBookForUser(Guid.Parse(_userInfoService.UserId), phoneBook)
-                .ConfigureAwait(false);
+                .CreatePhoneBookForUser(Guid.Parse(_userInfoService.UserId), phoneBook);
 
             await _phoneBookRepository.SaveChangesAsync();
 
@@ -380,8 +373,7 @@ namespace ThePhoneBook.WebApi.Api.PhoneBooks
             PhoneBook phoneBook = _mapper.Map<PhoneBook>(phoneBookWithEntriesCreateRequest);
 
             phoneBook = await _phoneBookRepository
-                .CreatePhoneBookForUser(Guid.Parse(_userInfoService.UserId), phoneBook)
-                .ConfigureAwait(false);
+                .CreatePhoneBookForUser(Guid.Parse(_userInfoService.UserId), phoneBook);
 
             await _phoneBookRepository.SaveChangesAsync();
 
